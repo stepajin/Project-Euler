@@ -8,7 +8,7 @@
 
 var sumsOfDivisors = [Int](repeating: 1, count: 28124)
 (2...28123/2).forEach { n in
-	(2...28123/n).forEach { sumsOfDivisors[$0 * n] += n }
+    (2...28123/n).forEach { sumsOfDivisors[$0 * n] += n }
 }
 
 let abundantNumbers = (2...28123).filter { sumsOfDivisors[$0] > $0 }
@@ -16,11 +16,11 @@ let abundantNumbers = (2...28123).filter { sumsOfDivisors[$0] > $0 }
 var flags = [Bool](repeating: false, count: 28124)
 
 for index in (0..<abundantNumbers.count) {
-	for index2 in (index..<abundantNumbers.count) {
-		let sum = abundantNumbers[index] + abundantNumbers[index2]
-		if sum > 28123 { break }
-		flags[sum] = true
-	}
+    for index2 in (index..<abundantNumbers.count) {
+        let sum = abundantNumbers[index] + abundantNumbers[index2]
+        if sum > 28123 { break }
+        flags[sum] = true
+    }
 }
 
 let result = flags.enumerated().compactMap { index, flag in flag ? nil : index }.reduce(0, +)

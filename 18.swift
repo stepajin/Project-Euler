@@ -30,17 +30,17 @@ let raw = """
 """
 
 func parseTriangle(from raw: String) -> [[Int]] {
-	let lines: [String] = raw.split(separator: "\n").map(String.init)
-	return lines.map { $0.split(separator: " ").map(String.init).compactMap(Int.init) }
+    let lines: [String] = raw.split(separator: "\n").map(String.init)
+    return lines.map { $0.split(separator: " ").map(String.init).compactMap(Int.init) }
 }
 
 func maxPath(in triangle: [[Int]]) -> Int {
-	let result: [Int] = triangle.dropLast().reversed().reduce(triangle.last!) { subpaths, line -> [Int] in
-		line.enumerated().map { offset, value -> Int in
-			max(value + subpaths[offset], value + subpaths[offset+1])
-		}
-	}
-	return result[0]
+    let result: [Int] = triangle.dropLast().reversed().reduce(triangle.last!) { subpaths, line -> [Int] in
+        line.enumerated().map { offset, value -> Int in
+            max(value + subpaths[offset], value + subpaths[offset+1])
+        }
+    }
+    return result[0]
 }
 
 let triangle = parseTriangle(from: raw)

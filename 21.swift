@@ -7,12 +7,12 @@
 
 var sumsOfDivisors = [Int](repeating: 1, count: 10001)
 (2...5000).forEach { n in
-	(2...10000/n).forEach { sumsOfDivisors[$0 * n] += n }
+    (2...10000/n).forEach { sumsOfDivisors[$0 * n] += n }
 }
 
 let result = (2...10000).reduce(0) { acc, n in 
-	let sum = sumsOfDivisors[n]
-	guard sum > n, sum <= 10000 else { return acc }
-	return sumsOfDivisors[sum] == n ? acc + n + sum : acc
+    let sum = sumsOfDivisors[n]
+    guard sum > n, sum <= 10000 else { return acc }
+    return sumsOfDivisors[sum] == n ? acc + n + sum : acc
 }
 print(result)
