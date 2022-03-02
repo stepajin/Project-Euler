@@ -5,7 +5,7 @@
 
 //Find the sum of the digits in the number 100!
 
-struct Number: CustomDebugStringConvertible {
+struct Number: CustomDebugStringConvertible, Comparable, Strideable {
     static var zero: Number { Number([0]) }
     
     private(set) var digits: [Int]
@@ -32,6 +32,12 @@ struct Number: CustomDebugStringConvertible {
         digits.map(String.init).joined()
     }
     
+    func advanced(by n: Int) -> Number {
+        self + Number(n)
+    }
+    
+    func distance(to other: Number) -> Int { 0 }
+    
     static func +(left: Number, right: Number) -> Number {
         let digitsCount = max(left.digits.count, right.digits.count)
         let leftDigits = [Int](repeating: 0, count: digitsCount - left.digits.count) + left.digits
@@ -51,17 +57,17 @@ struct Number: CustomDebugStringConvertible {
     }
     
     static func *(left: Number, right: Number) -> Number {
-        let products: [Number] = left.digits.reversed().enumerated().lazy.map { offset, leftDigit in
-            let product = [Number](repeating: right, count: leftDigit).reduce(.zero, +)
-            let zeros = [Int](repeating: 0, count: offset)
-            return Number(product.digits + zeros)			
-        }
-        return products.reduce(.zero, +)
+        (Number(1)...right).lazy.map { _ in left }.reduce(.zero, +)
     }
     
-    func pow(_ pow: Int) -> Number {
-        guard pow > 0 else { return Number(1) }
-        return [Number](repeating: self, count: pow).reduce(Number(1), *)
+    static func ==(left: Number, right: Number) -> Bool {
+        left.digits == right.digits
+    }
+    
+    static func <(left: Number, right: Number) -> Bool {
+        left.digits.count == right.digits.count
+            ? zip(left.digits, right.digits).first { $0 != $1 }.map(<) ?? false
+            : left.digits.count < right.digits.count
     }
 }
 
