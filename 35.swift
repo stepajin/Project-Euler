@@ -9,7 +9,7 @@
 func isPrime(_ n: Int) -> Bool {
     struct Map {
         static let isPrime: [Bool] = {
-            let bound = 700000000
+            let bound = 1000000
             var flags = [Bool](repeating: true, count: (bound+1)/2)
             flags[0] = false
             for n in stride(from: 3, through: bound, by: 2) {
@@ -21,7 +21,7 @@ func isPrime(_ n: Int) -> Bool {
             return flags
         }()
     }
-    return n % 2 == 0 ? false : Map.isPrime[(n-1)/2]
+    return n % 2 == 0 ? n == 2 : Map.isPrime[(n-1)/2]
 }
 
 func rotations(of n: Int) -> [Int] {
