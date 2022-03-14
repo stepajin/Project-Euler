@@ -29,7 +29,7 @@ func isPrime(_ n: Int) -> Bool {
             return flags
         }()
     }
-    return n % 2 == 0 ? false : Map.isPrime[(n-1)/2]
+    return n % 2 == 0 ? n == 2 : Map.isPrime[(n-1)/2]
 }
 
 var primesCount = 0
