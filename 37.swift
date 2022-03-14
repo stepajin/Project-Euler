@@ -6,62 +6,22 @@
 
 // Sieve of Eratosthenes
 // Odd numbers only
-struct PrimeNumbers: Sequence, IteratorProtocol {
-    private let bound: Int
-    
-    private var flags: [Bool]
-    private var currentIndex: Int = -1
-    private var count: Int { (bound-1)/2 }
-    
-    init(bound: Int) {
-        self.bound = bound
-        flags = [Bool](repeating: true, count: (bound-1)/2)
-    }
-    
-    private func number(at index: Int) -> Int {
-        2 * index + 3
-    }
-    
-    private mutating func mark(from fromIndex: Int) {
-        let number = number(at: fromIndex)
-        let offset = number
-        var idx = fromIndex + offset
-        while idx <= count - 1 {
-            flags[idx] = false
-            idx += offset
-        }
-    }
-    
-    @discardableResult
-    mutating func next() -> Int? {
-        if currentIndex == -1 {
-            currentIndex = 0
-            return 2
-        }
-        if currentIndex >= count {
-            return nil
-        }
-        guard let primeIndex = (currentIndex...count-1).first(where: { flags[$0] }) else {
-            currentIndex = count
-            return nil
-        }
-        let number = number(at: primeIndex)
-        mark(from: primeIndex)
-        currentIndex = primeIndex + 1
-        return number
-    }
-}
-
 func isPrime(_ n: Int) -> Bool {
     struct Map {
         static let isPrime: [Bool] = {
             let bound = 1000000
-            var map = [Bool](repeating: false, count: bound)
-            PrimeNumbers(bound: bound).forEach { map[$0] = true }
-            return map
+            var flags = [Bool](repeating: true, count: 1000000)//(bound+1)/2)
+            flags[0] = false
+            for n in stride(from: 3, through: bound, by: 2) {
+                guard flags[(n-1)/2] else { continue }
+                for i in stride(from: 3 * n, through: bound, by: 2 * n) {
+                    flags[(i-1)/2] = false
+                }
+            }
+            return flags
         }()
     }
-    return Map.isPrime[n]
+    return n % 2 == 0 ? n == 2 : Map.isPrime[(n-1)/2]
 }
 
 func isTruncatableFromLeftPrime(_ n: Int) -> Bool {
